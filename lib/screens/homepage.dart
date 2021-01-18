@@ -22,6 +22,7 @@ class LandingScreen extends StatelessWidget {
               BottomNavigationBarItem(icon: Icon(Icons.camera), label: 'Camera',),
               BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Google Map',),
               BottomNavigationBarItem(icon: Icon(Icons.person), label: 'About Me',),
+              BottomNavigationBarItem(icon: Icon(Icons.directions_run), label: 'Animations',),
             ],
             currentIndex: navState.selectedIndex,
             onTap: (index){
