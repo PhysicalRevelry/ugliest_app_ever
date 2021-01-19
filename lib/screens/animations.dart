@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -28,12 +30,12 @@ class _AnimationsState extends State<Animations>
   //Did a hack to make it button controllable, Tweens usually start right on load
   //Seems that you can only use one tween per widget?
   double endTweenValue = 1;
-  Tween<double> _scaleTween = Tween<double>(begin: 1, end: 1);
+  // Tween<double> _scaleTween = Tween<double>(begin: 1, end: 1);
   ColorTween _colorTween = ColorTween(begin: Colors.green, end: Colors.green);
 
   void _updateTween() {
     setState(() {
-      _scaleTween = Tween<double>(begin: 1, end: 2);
+      // _scaleTween = Tween<double>(begin: 1, end: 2);
       _colorTween = ColorTween(begin: Colors.green, end: Colors.pinkAccent);
     });
   }
@@ -47,9 +49,18 @@ class _AnimationsState extends State<Animations>
       vsync: this,
       duration: Duration(seconds: 2),
     );
+    // _controller.forward();
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  ///Here is the widget tree you'll see on the app
+  //The widgets are not in the same order as the control stations above, SORRY
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +69,28 @@ class _AnimationsState extends State<Animations>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              AnimatedBuilder(
+                animation: _controller.view,
+                builder: (context, child) {
+                  return Transform.rotate(
+                    angle: _controller.value * 2 * pi,
+                    child: child,
+                  );
+                },
+                child: GestureDetector(
+                  onTap: () {
+                    _controller.forward();
+                  },
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    color: Colors.red,
+                    child: Center(
+                      child: Text('Tap Me Builder'),
+                    ),
+                  ),
+                ),
+              ),
               TweenAnimationBuilder(
                 tween: _colorTween,
                 curve: Curves.linear,
